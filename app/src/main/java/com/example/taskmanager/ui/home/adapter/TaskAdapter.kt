@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.databinding.ItemTaskBinding
 import com.example.taskmanager.model.Task
 
-class TaskAdapter(private val data:ArrayList<Task>): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    private val data:ArrayList<Task> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(ItemTaskBinding.inflate(LayoutInflater.from(parent.context),parent,false))
@@ -18,6 +20,11 @@ class TaskAdapter(private val data:ArrayList<Task>): RecyclerView.Adapter<TaskAd
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    fun addTask(task:Task){
+        data.add(0, task)
+        notifyItemChanged(0)
     }
 
     inner class TaskViewHolder(private val binding: ItemTaskBinding): RecyclerView.ViewHolder(binding.root){

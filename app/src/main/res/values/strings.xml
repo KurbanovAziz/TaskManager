@@ -11,4 +11,6 @@
     <string name="title_task">Task</string>
     <string name="title_profile">Profile</string>
     <string name="profile">Profile</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
 </resources>
