@@ -60,6 +60,10 @@ class HomeFragment : Fragment() {
         builder.setMessage("Если вы удалите данную строку его нельзя будет восстановить!")
         builder.setPositiveButton("Да") { dialogInterface: DialogInterface, i: Int ->
             App.db.dao().delete(data[position])
+            findNavController().run {
+                popBackStack()
+                navigate(R.id.navigation_home)
+            }
         }
         builder.setNegativeButton("Нет") { dialogInterface: DialogInterface, i: Int ->
         }
