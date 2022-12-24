@@ -1,12 +1,14 @@
 package com.example.taskmanager.ui.home
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.example.taskmanager.App
 import com.example.taskmanager.R
 import com.example.taskmanager.databinding.FragmentHomeBinding
 import com.example.taskmanager.model.Task
@@ -17,11 +19,11 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private lateinit var adapter: TaskAdapter
     private val binding get() = _binding!!
-
+    private lateinit var data : List<Task>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = TaskAdapter()
+        adapter = TaskAdapter(this::onClick)
     }
 
     override fun onCreateView(
@@ -37,10 +39,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
-        setFragmentResultListener("rq_task") { key, bundle ->
-            val data: Task = bundle.getSerializable("task") as Task
-            adapter.addTask(data)
-        }
+        data = App.db.dao().getAll()
+        adapter.addTasks(data)
 
 
         binding.fab.setOnClickListener {
@@ -48,8 +48,22 @@ class HomeFragment : Fragment() {
         }
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun onClick(position: Int){
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Вы уверенны что хотите удалить?")
+        builder.setMessage("Если вы удалите данную строку его нельзя будет восстановить!")
+        builder.setPositiveButton("Да") { dialogInterface: DialogInterface, i: Int ->
+            App.db.dao().delete(data[position])
+        }
+        builder.setNegativeButton("Нет") { dialogInterface: DialogInterface, i: Int ->
+        }
+        builder.show()
+    }
+
 }
