@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.taskmanager.App
@@ -24,7 +25,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = TaskAdapter(this::onClick)
+        adapter = TaskAdapter(this::onLongClick,this::onCLick)
     }
 
     override fun onCreateView(
@@ -41,6 +42,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
         setData()
+
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
         }
@@ -57,7 +59,11 @@ class HomeFragment : Fragment() {
         adapter.addTasks(data)
     }
 
-    private fun onClick(position: Int){
+    private fun onCLick(task: Task){
+        findNavController().navigate(R.id.taskFragment, bundleOf(KEY_FOR_TASK to task))
+    }
+
+    private fun onLongClick(position: Int){
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Вы уверенны что хотите удалить?")
         builder.setMessage("Если вы удалите данную строку его нельзя будет восстановить!")
@@ -68,6 +74,10 @@ class HomeFragment : Fragment() {
         builder.setNegativeButton("Нет") { dialogInterface: DialogInterface, i: Int ->
         }
         builder.show()
+    }
+
+    companion object{
+        const val KEY_FOR_TASK = "task"
     }
 
 }

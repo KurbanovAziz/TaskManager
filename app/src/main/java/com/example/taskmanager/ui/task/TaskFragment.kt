@@ -12,11 +12,13 @@ import com.example.taskmanager.App
 import com.example.taskmanager.R
 import com.example.taskmanager.databinding.FragmentTaskBinding
 import com.example.taskmanager.model.Task
+import com.example.taskmanager.ui.home.HomeFragment
 
 
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
+    private var task: Task? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,13 +30,27 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        task = arguments?.getSerializable(HomeFragment.KEY_FOR_TASK) as Task?
+
+        if (task == null) {
+            binding.btnSave.text = getString(R.string.save)
+        } else {
+            binding.edTitle.setText(task?.title.toString())
+            binding.edDesc.setText(task?.desc.toString())
+            binding.btnSave.text = getString(R.string.update)
+
+        }
+
         binding.btnSave.setOnClickListener {
-            save()
+            if (task == null) {
+                save()
+            } else {
+                update()
+            }
 
         }
 
     }
-
 
 
     private fun save() {
@@ -43,8 +59,13 @@ class TaskFragment : Fragment() {
             desc = binding.edDesc.text.toString()
         )
         App.db.dao().insert(data)
-        App.db.dao().delete(data)
+        findNavController().navigateUp()
+    }
 
+    private fun update() {
+        task?.title = binding.edTitle.text.toString()
+        task?.desc = binding.edDesc.text.toString()
+        task?.let { App.db.dao().update(it) }
         findNavController().navigateUp()
     }
 

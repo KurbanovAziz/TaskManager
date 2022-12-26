@@ -15,4 +15,5 @@
     <string name="next">Next</string>
     <string name="name">Name</string>
     <string name="age">Age</string>
+    <string name="update">Update</string>
 </resources>
