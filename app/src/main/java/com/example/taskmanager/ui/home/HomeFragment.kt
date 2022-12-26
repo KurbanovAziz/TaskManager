@@ -13,6 +13,7 @@ import com.example.taskmanager.R
 import com.example.taskmanager.databinding.FragmentHomeBinding
 import com.example.taskmanager.model.Task
 import com.example.taskmanager.ui.home.adapter.TaskAdapter
+import java.text.FieldPosition
 
 class HomeFragment : Fragment() {
 
@@ -39,10 +40,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
-        data = App.db.dao().getAll()
-        adapter.addTasks(data)
-
-
+        setData()
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
         }
@@ -54,16 +52,18 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    private fun setData(){
+        data = App.db.dao().getAll()
+        adapter.addTasks(data)
+    }
+
     private fun onClick(position: Int){
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Вы уверенны что хотите удалить?")
         builder.setMessage("Если вы удалите данную строку его нельзя будет восстановить!")
         builder.setPositiveButton("Да") { dialogInterface: DialogInterface, i: Int ->
             App.db.dao().delete(data[position])
-            findNavController().run {
-                popBackStack()
-                navigate(R.id.navigation_home)
-            }
+            setData()
         }
         builder.setNegativeButton("Нет") { dialogInterface: DialogInterface, i: Int ->
         }

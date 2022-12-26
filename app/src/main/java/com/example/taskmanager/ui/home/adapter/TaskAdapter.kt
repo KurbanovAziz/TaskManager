@@ -22,6 +22,7 @@ class TaskAdapter(
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(data[position])
+
     }
 
     override fun getItemCount(): Int {
@@ -44,8 +45,9 @@ class TaskAdapter(
 
             itemView.setOnLongClickListener {
                 onClick(adapterPosition)
-                return@setOnLongClickListener false
+                false
             }
+
 
         }
 
