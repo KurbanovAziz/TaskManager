@@ -84,14 +84,14 @@ class HomeFragment : Fragment() {
 
 
     private fun onCLick(task: Task) {
-        if (requireContext().isNetworkConnected()){}
-        else{
-        findNavController().navigate(R.id.taskFragment, bundleOf(KEY_FOR_TASK to task))}
+        if (!requireContext().isNetworkConnected()){
+            findNavController().navigate(R.id.taskFragment, bundleOf(KEY_FOR_TASK to task))
+        }
+
     }
 
     private fun onLongClick(position: Int) {
-       if (requireContext().isNetworkConnected()){}
-        else {
+       if (!requireContext().isNetworkConnected()){
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Вы уверенны что хотите удалить?")
         builder.setMessage("Если вы удалите данную строку его нельзя будет восстановить!")
