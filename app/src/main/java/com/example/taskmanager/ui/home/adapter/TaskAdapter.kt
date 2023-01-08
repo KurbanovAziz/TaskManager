@@ -1,11 +1,14 @@
 package com.example.taskmanager.ui.home.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.databinding.ItemTaskBinding
 import com.example.taskmanager.model.Task
+import com.example.taskmanager.utils.isNetworkConnected
 
 class TaskAdapter(
     private val onLongClick: (pos : Int) -> Unit,

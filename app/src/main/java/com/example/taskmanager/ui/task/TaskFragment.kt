@@ -1,18 +1,19 @@
 package com.example.taskmanager.ui.task
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.taskmanager.App
 import com.example.taskmanager.R
 import com.example.taskmanager.databinding.FragmentTaskBinding
 import com.example.taskmanager.model.Task
 import com.example.taskmanager.ui.home.HomeFragment
+import com.example.taskmanager.utils.showToast
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class TaskFragment : Fragment() {
@@ -40,18 +41,17 @@ class TaskFragment : Fragment() {
             binding.btnSave.text = getString(R.string.update)
 
         }
-
         binding.btnSave.setOnClickListener {
             if (task == null) {
                 save()
+                saveDataToFb()
             } else {
                 update()
             }
 
+            findNavController().navigateUp()
         }
-
     }
-
 
     private fun save() {
         val data = Task(
@@ -59,14 +59,37 @@ class TaskFragment : Fragment() {
             desc = binding.edDesc.text.toString()
         )
         App.db.dao().insert(data)
-        findNavController().navigateUp()
     }
 
     private fun update() {
         task?.title = binding.edTitle.text.toString()
         task?.desc = binding.edDesc.text.toString()
         task?.let { App.db.dao().update(it) }
-        findNavController().navigateUp()
     }
 
+    private fun saveDataToFb() {
+        val data =
+            Task(
+                title = binding.edTitle.text.toString(),
+                desc = binding.edDesc.text.toString()
+            )
+        App.firebaseDB?.collection("tasks")
+            ?.add(data)
+            ?.addOnSuccessListener {
+                Log.e("ololo", " sdgkdgkdf")
+            }?.addOnFailureListener {
+                showToast(it.message.toString())
+            }
+
+
+    }
+
+
 }
+
+
+
+
+
+
+

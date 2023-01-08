@@ -14,11 +14,9 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.identity.SignInCredential
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 
@@ -27,7 +25,6 @@ class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
     private lateinit var signInRequest: BeginSignInRequest
     private val REQ_ONE_TAP = 2
-    private val showOneTapUI = true
     private lateinit var oneTapClient: SignInClient
 
     override fun onCreateView(
@@ -94,5 +91,7 @@ class AuthFragment : Fragment() {
             }
         }
     }
+
+
 
 }
