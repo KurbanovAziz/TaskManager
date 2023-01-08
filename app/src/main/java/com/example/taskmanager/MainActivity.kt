@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity() {
         if (!pref.isOnBoardingSeen())
             navController.navigate(R.id.onBoardingFragment)
 
-//        if (auth .currentUser == null){
-//            navController.navigate(R.id.authFragment)
-//        }
+        if (auth .currentUser == null){
+            navController.navigate(R.id.authFragment)
+        }
 
         val appBarConfiguration = AppBarConfiguration(setOf(
             R.id.navigation_home, R.id.navigation_dashboard,
