@@ -1,6 +1,7 @@
 package com.example.taskmanager
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -14,6 +15,8 @@ import com.example.taskmanager.data.Pref
 import com.example.taskmanager.databinding.ActivityMainBinding
 import com.example.taskmanager.ui.task.TaskFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 
 class MainActivity : AppCompatActivity() {
 
@@ -59,5 +62,10 @@ class MainActivity : AppCompatActivity() {
         }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            Log.e("ololo",it.result)
+        }
+
     }
 }
